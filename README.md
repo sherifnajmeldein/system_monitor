@@ -31,12 +31,26 @@ To run the script manually:
 
 ### Example Output
 ```sh
+System Monitoring Report - Thu Jan 30 04:00:01 AM EET 2025
+======================================
 Disk Usage:
-/dev/sda2        49G  9.7G   37G  21% /
+/dev/sda2        49G  9.8G   37G  22% /
+Warning: High disk usage on /dev/sr0: 100%
+/dev/sr0        5.8G  5.8G     0 100% /media/negm/Ubuntu 24.04.1 LTS amd64
+
 CPU Usage:
-CPU Usage: 12.9 %
+CPU Usage: 40.9 %
+
 Memory Usage:
-Total: 8GB, Used: 4GB, Free: 4GB
+Total: 7.7Gi | Used: 1.3Gi | Free: 5.4Gi
+
+Top 5 Memory-Consuming Processes:
+PID USER %MEM COMMAND
+2293 negm 2.9 /usr/bin/gnome-shell
+5577 negm 1.8 /usr/bin/nautilus
+5756 negm 1.8 /usr/bin/gnome-text-editor
+3077 negm 0.9 /usr/libexec/mutter-x11-frames
+2399 negm 0.9 /usr/bin/Xwayland
 ```
 
 ## Script Breakdown
