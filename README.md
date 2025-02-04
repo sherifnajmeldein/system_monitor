@@ -1,80 +1,98 @@
-# System Monitor Script
+System Monitor Script
+Overview
+This script provides real-time monitoring of system resources such as disk usage, CPU usage, and memory usage. It helps users quickly assess the system's performance and identify potential issues. Additionally, it can send email alerts when disk usage exceeds a specified threshold.
 
-## Overview
-This script provides real-time monitoring of system resources such as disk usage, CPU usage, and memory usage. It helps users quickly assess the system's performance and identify potential issues.
+Features
+✅ Displays disk usage of all mounted devices.
+✅ Calculates and shows CPU usage percentage.
+✅ Monitors available and used memory.
+✅ Sends email alerts when disk usage exceeds a threshold.
+✅ Can be scheduled to run periodically using cron.
 
-## Features
-- Displays disk usage of all mounted devices.
-- Calculates and shows CPU usage percentage.
-- Monitors available and used memory.
-- Can be scheduled to run periodically using `cron`.
+Prerequisites
+Ubuntu 24.04 (or any Linux distribution with df, top, awk, grep, free, and sendemail installed).
+A Gmail account with an App Password (since Google blocks less secure apps).
+Installation
+1️⃣ Install Required Packages
+Before using the script, install sendemail and ssmtp for sending alerts:
 
-## Prerequisites
-- Ubuntu 24.04 (or any Linux distribution with `df`, `top`, `awk`, `grep`, and `free` installed).
-- Basic knowledge of running shell scripts.
-
-## Installation
-1. Copy the script to your home directory:
-   ```sh
-   cp system_monitor.sh ~/system_monitor.sh
-   ```
-2. Grant execution permission:
-   ```sh
-   chmod +x ~/system_monitor.sh
-   ```
-
-## Usage
+sh
+Copy
+Edit
+sudo apt update
+sudo apt install sendemail ssmtp -y
+2️⃣ Copy the Script to Your Home Directory
+sh
+Copy
+Edit
+cp system_monitor.sh ~/system_monitor.sh
+3️⃣ Grant Execution Permission
+sh
+Copy
+Edit
+chmod +x ~/system_monitor.sh
+Usage
 To run the script manually:
-```sh
+
+sh
+Copy
+Edit
 ./system_monitor.sh
-```
+Configuration
+Set Disk Usage Alert Threshold
+By default, the script sends an email alert when disk usage exceeds 1%.
+To change this, update the THRESHOLD value in the script:
 
-### Example Output
-```sh
-System Monitoring Report - Thu Jan 30 04:00:01 AM EET 2025
-======================================
-Disk Usage:
-/dev/sda2        49G  9.8G   37G  22% /
-Warning: High disk usage on /dev/sr0: 100%
-/dev/sr0        5.8G  5.8G     0 100% /media/negm/Ubuntu 24.04.1 LTS amd64
+sh
+Copy
+Edit
+THRESHOLD=80  # Alerts if disk usage exceeds 80%
+Set Email Credentials
+Modify these variables in the script with your Gmail credentials:
 
-CPU Usage:
-CPU Usage: 40.9 %
+sh
+Copy
+Edit
+EMAIL="your_email@example.com"  # Recipient email
+FROM="your_gmail@gmail.com"     # Sender email
+SMTP_USER="your_gmail@gmail.com"
+SMTP_PASS="your_app_password"
+💡 Important: If using Gmail, generate an App Password instead of using your regular password.
 
-Memory Usage:
-Total: 7.7Gi | Used: 1.3Gi | Free: 5.4Gi
-
-Top 5 Memory-Consuming Processes:
-PID USER %MEM COMMAND
-2293 negm 2.9 /usr/bin/gnome-shell
-5577 negm 1.8 /usr/bin/nautilus
-5756 negm 1.8 /usr/bin/gnome-text-editor
-3077 negm 0.9 /usr/libexec/mutter-x11-frames
-2399 negm 0.9 /usr/bin/Xwayland
-```
-
-## Script Breakdown
-- **Disk Usage:** Uses `df -h | grep -E '^/dev'` to filter mounted disk partitions.
-- **CPU Usage:** Extracts idle percentage from `top -bn1` and calculates the used percentage.
-- **Memory Usage:** Uses `free -m` to display available and used memory.
-
-## Automating with Cron
+Example Output
+sh
+Copy
+Edit
+🚨 Sending alert email...
+✅ Email sent successfully!
+📂 System report saved to system_monitor.log
+Script Breakdown
+Disk Usage: Uses df -h | grep -E '^/dev' to filter mounted disk partitions.
+CPU Usage: Extracts idle percentage from top -bn1 and calculates the used percentage.
+Memory Usage: Uses free -m to display available and used memory.
+Email Alerts: Uses sendemail to notify users of high disk usage.
+Automating with Cron
 To schedule the script to run every 5 minutes:
-```sh
+
+sh
+Copy
+Edit
 crontab -e
-```
 Add the following line at the end of the file:
-```sh
+
+sh
+Copy
+Edit
 */5 * * * * /home/your_username/system_monitor.sh >> /home/your_username/system_monitor.log 2>&1
-```
+Troubleshooting
+🔹 If you get Permission denied, ensure the script has execution rights:
 
-## Troubleshooting
-- If you get `Permission denied`, ensure the script has execution rights:
-  ```sh
-  chmod +x system_monitor.sh
-  ```
-- If output is incorrect, verify that `top`, `df`, and `free` are installed.
+sh
+Copy
+Edit
+chmod +x system_monitor.sh
+🔹 If email is not sent, ensure sendemail and ssmtp are installed.
+🔹 Check SMTP settings if authentication fails.
 
-## Author
-Created by **Negm**, Ubuntu 24.04, running in VMware.
-
+Author
+Created by Negm, Ubuntu 24.04, running in VMware.
